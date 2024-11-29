@@ -31,8 +31,10 @@ struct TodoListApp: App {
             RouterView {_ in
                 if isAuthorized {
                     TodoListScreen()
+                        .preferredColorScheme(.light)
                 } else {
                     GetStartedScreen()
+                        .preferredColorScheme(.light)
                     //                .modelContainer(sharedModelContainer)
                 }
             }

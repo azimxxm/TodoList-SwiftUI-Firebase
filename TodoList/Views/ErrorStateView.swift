@@ -13,7 +13,8 @@ struct ErrorStateView: View {
         if let errorMessage = errorMessage {
             Text(errorMessage)
                 .foregroundColor(.red)
-                .font(.caption)
+                .font(.system(size: 16))
+                .multilineTextAlignment(.center)
         }
     }
 }

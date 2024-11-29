@@ -29,24 +29,15 @@ struct TodoListScreen: View {
                 .buttonStyle(.plain)
             }
             .padding()
-            
-            List {
-                DayFilterView(isSelectedDay: $viewModel.isSelectedDay)
-                ForEach(viewModel.filtredData) { item in
-                    NavigationLink {
-                        Text(item.title)
-                    } label: {
-                        TodoListCell(item: item) {
-                            item.isCompleted.toggle()
-                        }
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-            .listStyle(.inset)
+            DayFilterView(isSelectedDay: $viewModel.isSelectedDay)
+            todoList
+
         }
         .alert(isPresented: $viewModel.showLogOutMenu, content: {
             Alert(title: Text("Log Out"), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: { viewModel.logout() }))
+        })
+        .alert("Add new item", isPresented: $viewModel.showFormView, actions: {
+            AddNewTodosAlertView { item in addItem(item) }
         })
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -55,7 +46,29 @@ struct TodoListScreen: View {
             }
             ToolbarItem(placement: .topBarTrailing) { addButton }
         }
-        .background(Color.bg.ignoresSafeArea())
+    }
+    
+    @ViewBuilder
+    private var todoList: some View {
+        List {
+            ForEach(viewModel.filtredData) { item in
+                NavigationLink {
+                    VStack(spacing: 16) {
+                        Text(item.title)
+                        if let detail = item.details {
+                            Text(detail)
+                        }
+                    }
+                } label: {
+                    TodoListCell(item: item) {
+                        item.isCompleted.toggle()
+                    }
+                }
+            }
+            .onDelete(perform: deleteItems)
+        }
+        .listStyle(.inset)
+        .scrollContentBackground(.hidden)
     }
     
     @ViewBuilder
@@ -65,21 +78,14 @@ struct TodoListScreen: View {
             .padding(10)
             .background(.main.opacity(0.25))
             .cornerRadius(12)
-            .onTapGesture { addItem() }
+            .onTapGesture { viewModel.showFormView.toggle() }
             .onLongPressGesture { viewModel.showLogOutMenu.toggle() }
         
     }
 
-    private func addItem() {
+    private func addItem(_ item: ItemDM) {
         withAnimation {
-            let newItem = ItemDM(
-                title: "Salom",
-                details: nil,
-                isCompleted: false,
-                createdAt: Date()
-            )
-//            modelContext.insert(newItem)
-            viewModel.items.append(newItem)
+            viewModel.items.append(item)
         }
     }
 
@@ -96,36 +102,5 @@ struct TodoListScreen: View {
 #Preview {
     TodoListScreen()
 //        .modelContainer(for: ItemDM.self, inMemory: true)
-}
-
-
-import SwiftUI
-
-extension View {
-    
-    /// Wrap a View in a Button and add a custom ButtonStyle.
-    func asButton(scale: CGFloat = 0.95, opacity: Double = 1, brightness: Double = 0, action: @escaping () -> Void) -> some View {
-        Button(action: {
-            action()
-        }, label: {
-            self
-        })
-        .buttonStyle(ButtonStyleViewModifier(scale: scale, opacity: opacity, brightness: brightness))
-    }
-    
-    @ViewBuilder
-    func asButton(_ type: ButtonType = .tap, action: @escaping () -> Void) -> some View {
-        switch type {
-        case .press:
-            self.asButton(scale: 0.975, action: action)
-        case .opacity:
-            self.asButton(scale: 1, opacity: 0.85, action: action)
-        case .tap:
-            self.onTapGesture {
-                action()
-            }
-        }
-    }
-    
 }
 

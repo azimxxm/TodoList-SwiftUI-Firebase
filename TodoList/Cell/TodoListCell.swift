@@ -24,7 +24,7 @@ struct TodoListCell: View {
                     .lineLimit(2)
                     .font(.title3)
                     .foregroundStyle(.text.opacity(0.76))
-                Text("Due: \(item.createdAt)")
+                Text(item.createdAt, format: .dateTime)
                     .font(.caption)
                     .foregroundStyle(.textGray)
             }

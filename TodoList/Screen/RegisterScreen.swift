@@ -42,9 +42,9 @@ struct RegisterScreen: View {
                         )
                     }
                     
-                    ErrorStateView(errorMessage: viewModel.errorMessage)
-                    
                     VStack(spacing: 16) {
+                        ErrorStateView(errorMessage: viewModel.errorMessage)
+                            .padding(.bottom, 10)
                         ButtonView(title: "Register") { viewModel.register() }
                         HStack(spacing: 8) {
                             Text("Already have an account ?")

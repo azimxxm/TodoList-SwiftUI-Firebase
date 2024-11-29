@@ -15,7 +15,11 @@ class LoginScreenVM: ObservableObject {
     @Published var user: UserDM?
     
     func login() {
-        guard !email.isEmpty, !password.isEmpty else { return }
+        errorMessage = nil
+        guard !email.isEmpty, !password.isEmpty else {
+            errorMessage = "Please enter email and password"
+            return
+        }
         Task {
             await FirebaseAuthManager.shared.signIn(with: email, password: password) {[weak self] user in
                 DispatchQueue.main.async {

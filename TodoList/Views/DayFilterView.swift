@@ -17,8 +17,10 @@ struct DayFilterView: View {
                         .onTapGesture { isSelectedDay = day }
                 }
             }
+            .padding(.leading)
         }
         .frame(height: 125)
+
     }
 }
 

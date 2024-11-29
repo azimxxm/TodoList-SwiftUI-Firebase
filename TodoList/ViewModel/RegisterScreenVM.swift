@@ -15,10 +15,13 @@ class RegisterScreenVM: ObservableObject {
     @Published var confirmPassword: String = ""
     @Published var errorMessage: String? = nil
     @Published var user: UserDM?
-    @AppStorage(SomeKeys.isAuthorized.rawValue) private var isAuthorized: Bool = false
     
     func register() {
-        guard !email.isEmpty, !password.isEmpty, !confirmPassword.isEmpty, password == confirmPassword else { return }
+        errorMessage = nil
+        guard !email.isEmpty, !password.isEmpty, !confirmPassword.isEmpty, password == confirmPassword else {
+            errorMessage = "Passwords don't match"
+            return
+        }
         Task {
             await FirebaseAuthManager.shared.createUser(with: email, password: password) {[weak self] user in
                 DispatchQueue.main.async {

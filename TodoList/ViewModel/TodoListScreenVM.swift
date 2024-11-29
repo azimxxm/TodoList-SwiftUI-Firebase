@@ -15,6 +15,7 @@ class TodoListScreenVM: ObservableObject {
     @Published var isSelectedDay: Int = 0
     @Published var hideIscompleted: Bool = false
     @Published var showLogOutMenu: Bool = false
+    @Published var showFormView: Bool = false
     
     
     var filtredData: [ItemDM] {
