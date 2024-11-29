@@ -10,9 +10,10 @@ import SwiftUI
 
 struct CustomSTFView: View {
     @Binding var text: String
+    var placeholder: String = "Placeholder"
     var keyboardType: UIKeyboardType = .default
     var body: some View {
-        SecureField("", text: $text, prompt: Text("Placeholder").foregroundStyle(.textGray))
+        SecureField("", text: $text, prompt: Text(placeholder).foregroundStyle(.textGray))
             .padding()
             .keyboardType(keyboardType)
             .foregroundStyle(.text)

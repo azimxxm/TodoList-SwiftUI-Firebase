@@ -9,9 +9,10 @@ import SwiftUI
 
 struct CustomTFView: View {
     @Binding var text: String
+    var placeholder: String = "Placeholder"
     var keyboardType: UIKeyboardType = .default
     var body: some View {
-        TextField("", text: $text, prompt: Text("Placeholder").foregroundStyle(.textGray))
+        TextField("", text: $text, prompt: Text(placeholder).foregroundStyle(.textGray))
             .padding()
             .keyboardType(keyboardType)
             .background(.white)

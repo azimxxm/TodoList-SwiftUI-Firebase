@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CustomTFWithHeaderView: View {
     var title: String = "Enter name"
+    var placeholder: String = "placeholder"
     @Binding var text: String
     var keyboardType: UIKeyboardType = .default
     var body: some View {
@@ -18,7 +19,7 @@ struct CustomTFWithHeaderView: View {
                 .fontWeight(.medium)
                 .foregroundStyle(.text)
                 .padding(.leading)
-            CustomTFView(text: $text, keyboardType: keyboardType)
+            CustomTFView(text: $text, placeholder: placeholder, keyboardType: keyboardType)
         }
     }
 }

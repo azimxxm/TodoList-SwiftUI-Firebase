@@ -6,31 +6,55 @@
 //
 
 import FirebaseAuth
-import Foundation
+import SwiftUI
 
 final class FirebaseAuthManager {
     static let shared = FirebaseAuthManager()
+    @AppStorage(SomeKeys.isAuthorized.rawValue) private var isAuthorized: Bool = false
+    
+    private init() {
+        isAuthorized = Auth.auth().currentUser != nil
+    }
 
-    private init() {}
-
-    func getCurrentUser(complited: @escaping (UserDM) -> Void) throws {
+    func getCurrentUser(complited: @escaping (Result<UserDM, Error>) -> Void) {
         guard let user = Auth.auth().currentUser else {
-            throw URLError(.badServerResponse)
+            complited(.failure(URLError(.badServerResponse)))
+            return
         }
-        complited(UserDM(user: user))
+        isAuthorized = true
+        complited(.success(UserDM(user: user)))
     }
 
-    func signIn(with email: String, password: String, complited: @escaping (UserDM) -> Void) async throws {
-        let user = try await Auth.auth().signIn(withEmail: email, password: password)
-        complited(UserDM(user: user))
+    func signIn(with email: String, password: String, complited: @escaping (Result<UserDM, Error>) -> Void) async {
+        do {
+            let result = try await Auth.auth().signIn(withEmail: email, password: password)
+            isAuthorized = true
+            complited(.success(UserDM(user: result.user)))
+        } catch {
+            isAuthorized = false
+            complited(.failure(error))
+        }
     }
 
-    func signOut() throws {
-        try Auth.auth().signOut()
+    func signOut() {
+        Task {
+            do {
+                try Auth.auth().signOut()
+                isAuthorized = false
+            } catch {
+                print("Error signing out: \(error.localizedDescription)")
+            }
+        }
     }
 
-    func createUser(with email: String, password: String, complited: @escaping (UserDM) -> Void) async throws {
-        let user = try await Auth.auth().createUser(withEmail: email, password: password)
-        complited(UserDM(user: user))
+    func createUser(with email: String, password: String, complited: @escaping (Result<UserDM, Error>) -> Void) async {
+        do {
+            let result = try await Auth.auth().createUser(withEmail: email, password: password)
+            isAuthorized = true
+            complited(.success(UserDM(user: result.user)))
+        } catch {
+            isAuthorized = false
+            complited(.failure(error))
+        }
     }
 }

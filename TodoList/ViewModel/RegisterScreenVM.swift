@@ -13,19 +13,22 @@ class RegisterScreenVM: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
+    @Published var errorMessage: String? = nil
     @Published var user: UserDM?
     @AppStorage(SomeKeys.isAuthorized.rawValue) private var isAuthorized: Bool = false
     
     func register() {
         guard !email.isEmpty, !password.isEmpty, !confirmPassword.isEmpty, password == confirmPassword else { return }
         Task {
-            do {
-                try await FirebaseAuthManager.shared.createUser(with: email, password: password) {[weak self] user in
-                    self?.user = user
-                    self?.isAuthorized = true
+            await FirebaseAuthManager.shared.createUser(with: email, password: password) {[weak self] user in
+                DispatchQueue.main.async {
+                    switch user {
+                    case .success(let user):
+                        self?.user = user
+                    case .failure(let error):
+                        self?.errorMessage = error.localizedDescription
+                    }
                 }
-            } catch {
-                print("Error while registering: \(error.localizedDescription)")
             }
         }
     }

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CustomSTFWithHeaderView: View {
     var title: String = "Custom STF"
+    var placeholder: String = "placeholder"
     @Binding var text: String
     var keyboardType: UIKeyboardType = .default
     var body: some View {
@@ -18,7 +19,7 @@ struct CustomSTFWithHeaderView: View {
                 .fontWeight(.medium)
                 .foregroundStyle(.text)
                 .padding(.leading)
-            CustomSTFView(text: $text, keyboardType: keyboardType)
+            CustomSTFView(text: $text, placeholder: placeholder, keyboardType: keyboardType)
         }
     }
 }

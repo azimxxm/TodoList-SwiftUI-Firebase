@@ -23,9 +23,18 @@ struct LoginScreen: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: proxy.size.width * 0.5, height: proxy.size.height * 0.4)
-                        CustomTFWithHeaderView(title: "Email", text: $viewModel.email, keyboardType: .emailAddress)
+                        CustomTFWithHeaderView(
+                            title: "Email",
+                            placeholder: "hello@gmail.com",
+                            text: $viewModel.email,
+                            keyboardType: .emailAddress
+                        )
                             .padding(.bottom)
-                        CustomSTFWithHeaderView(title: "Password", text: $viewModel.password)
+                        CustomSTFWithHeaderView(
+                            title: "Password",
+                            placeholder: "******",
+                            text: $viewModel.password
+                        )
                         Button("Forgot Password?") {
                             
                         }
@@ -33,6 +42,9 @@ struct LoginScreen: View {
                         .foregroundStyle(.main)
                         .fontWeight(.medium)
                         .padding(10)
+                        
+                        ErrorStateView(errorMessage: viewModel.errorMessage)
+                        
                         VStack(spacing: 16) {
                             ButtonView(title: "Login") { viewModel.login() }
                             HStack(spacing: 8) {

@@ -46,7 +46,7 @@ struct TodoListScreen: View {
             .listStyle(.inset)
         }
         .alert(isPresented: $viewModel.showLogOutMenu, content: {
-            Alert(title: Text("Log Out"), message: Text("Are you sure you want to log out?"))
+            Alert(title: Text("Log Out"), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: { viewModel.logout() }))
         })
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
