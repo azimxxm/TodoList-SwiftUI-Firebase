@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import SwiftfulRouting
 
 @main
 struct TodoListApp: App {
@@ -22,11 +23,19 @@ struct TodoListApp: App {
 //            fatalError("Could not create ModelContainer: \(error)")
 //        }
 //    }()
+    @AppStorage(SomeKeys.isAuthorized.rawValue) private var isAuthorized: Bool = false
 
     var body: some Scene {
         WindowGroup {
-            TodoListScreen()
-//                .modelContainer(sharedModelContainer)
+            RouterView {_ in
+                if isAuthorized {
+                    TodoListScreen()
+                } else {
+                    GetStartedScreen()
+                    //                .modelContainer(sharedModelContainer)
+                }
+            }
         }
     }
 }
+

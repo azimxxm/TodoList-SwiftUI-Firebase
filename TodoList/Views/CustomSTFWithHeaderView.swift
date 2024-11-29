@@ -9,8 +9,8 @@ import SwiftUI
 
 struct CustomSTFWithHeaderView: View {
     var title: String = "Custom STF"
-    var keyboardType: UIKeyboardType = .default
     @Binding var text: String
+    var keyboardType: UIKeyboardType = .default
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)

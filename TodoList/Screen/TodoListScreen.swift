@@ -13,48 +13,44 @@ struct TodoListScreen: View {
     @StateObject private var viewModel = TodoListScreenVM()
     
     var body: some View {
-        NavigationSplitView {
-            VStack(spacing: 16) {
-                HStack {
-                    Text("Today")
-                        .font(.title)
-                        .foregroundStyle(.text)
-                        .bold()
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    Button("Hide isComplete") {
-                        withAnimation(.easeInOut(duration: 0.3)) {
-                        viewModel.hideIscompleted.toggle()
-                    } }
-                    .foregroundStyle(.main.opacity(0.5))
-                    .buttonStyle(.plain)
-                }
-                .padding()
+        VStack(spacing: 16) {
+            HStack {
+                Text("Today")
+                    .font(.title)
+                    .foregroundStyle(.text)
+                    .bold()
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 
-                List {
-                    DayFilterView(isSelectedDay: $viewModel.isSelectedDay)
-                    ForEach(viewModel.filtredData) { item in
-                        NavigationLink {
-                            Text(item.title)
-                        } label: {
-                            TodoListCell(item: item) {
-                                item.isCompleted.toggle()
-                            }
+                Button("Hide isComplete") {
+                    withAnimation(.easeInOut(duration: 0.3)) {
+                    viewModel.hideIscompleted.toggle()
+                } }
+                .foregroundStyle(.main.opacity(0.5))
+                .buttonStyle(.plain)
+            }
+            .padding()
+            
+            List {
+                DayFilterView(isSelectedDay: $viewModel.isSelectedDay)
+                ForEach(viewModel.filtredData) { item in
+                    NavigationLink {
+                        Text(item.title)
+                    } label: {
+                        TodoListCell(item: item) {
+                            item.isCompleted.toggle()
                         }
                     }
-                    .onDelete(perform: deleteItems)
                 }
-                .listStyle(.inset)
+                .onDelete(perform: deleteItems)
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Text("November 19.2024")
-                        .foregroundStyle(.textGray)
-                }
-                ToolbarItem(placement: .topBarTrailing) { addButton }
+            .listStyle(.inset)
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Text("November 19.2024")
+                    .foregroundStyle(.textGray)
             }
-        } detail: {
-            Text("Select an item")
+            ToolbarItem(placement: .topBarTrailing) { addButton }
         }
         .background(Color.bg.ignoresSafeArea())
     }
