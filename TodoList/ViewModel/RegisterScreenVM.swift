@@ -9,10 +9,9 @@ import SwiftUI
 
 @MainActor
 class RegisterScreenVM: ObservableObject {
-    @Published var fullName: String = ""
-    @Published var email: String = ""
-    @Published var password: String = ""
-    @Published var confirmPassword: String = ""
+    @Published var email: String = "hello@gmail.com"
+    @Published var password: String = "azimjonaaa"
+    @Published var confirmPassword: String = "azimjonaaa"
     @Published var errorMessage: String? = nil
     @Published var user: UserDM?
     

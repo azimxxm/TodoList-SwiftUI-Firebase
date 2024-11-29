@@ -10,6 +10,7 @@
 		CA82C5D22CFA2BC100C892B2 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CA82C5D12CFA2BC100C892B2 /* FirebaseAuth */; };
 		CA82C5D42CFA2BC100C892B2 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = CA82C5D32CFA2BC100C892B2 /* FirebaseDatabase */; };
 		CA82C5D62CFA2BC100C892B2 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CA82C5D52CFA2BC100C892B2 /* FirebaseMessaging */; };
+		CA82C7722CFA643600C892B2 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = CA82C7712CFA643600C892B2 /* FirebaseFirestore */; };
 		CAE23DA42CF9C9FA00D04A06 /* SwiftfulRouting in Frameworks */ = {isa = PBXBuildFile; productRef = CAE23DA32CF9C9FA00D04A06 /* SwiftfulRouting */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +34,7 @@
 				CA82C5D62CFA2BC100C892B2 /* FirebaseMessaging in Frameworks */,
 				CA82C5D42CFA2BC100C892B2 /* FirebaseDatabase in Frameworks */,
 				CAE23DA42CF9C9FA00D04A06 /* SwiftfulRouting in Frameworks */,
+				CA82C7722CFA643600C892B2 /* FirebaseFirestore in Frameworks */,
 				CA82C5D22CFA2BC100C892B2 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -40,10 +42,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CA82C7702CFA643600C892B2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CAE23D2F2CF99D6400D04A06 = {
 			isa = PBXGroup;
 			children = (
 				CAE23D3A2CF99D6400D04A06 /* TodoList */,
+				CA82C7702CFA643600C892B2 /* Frameworks */,
 				CAE23D392CF99D6400D04A06 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -80,6 +90,7 @@
 				CA82C5D12CFA2BC100C892B2 /* FirebaseAuth */,
 				CA82C5D32CFA2BC100C892B2 /* FirebaseDatabase */,
 				CA82C5D52CFA2BC100C892B2 /* FirebaseMessaging */,
+				CA82C7712CFA643600C892B2 /* FirebaseFirestore */,
 			);
 			productName = TodoList;
 			productReference = CAE23D382CF99D6400D04A06 /* TodoList.app */;
@@ -380,6 +391,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CA82C5D02CFA2BC100C892B2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		CA82C7712CFA643600C892B2 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA82C5D02CFA2BC100C892B2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 		CAE23DA32CF9C9FA00D04A06 /* SwiftfulRouting */ = {
 			isa = XCSwiftPackageProductDependency;

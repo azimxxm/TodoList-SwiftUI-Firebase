@@ -35,9 +35,7 @@ struct LoginScreen: View {
                             placeholder: "******",
                             text: $viewModel.password
                         )
-                        Button("Forgot Password?") {
-                            
-                        }
+                        Button("Forgot Password?") { viewModel.resetPassword() }
                         .frame(maxWidth: .infinity, alignment: .trailing)
                         .foregroundStyle(.main)
                         .fontWeight(.medium)

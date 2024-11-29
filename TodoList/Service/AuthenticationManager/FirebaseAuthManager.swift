@@ -57,4 +57,34 @@ final class FirebaseAuthManager {
             complited(.failure(error))
         }
     }
+    
+    
+    func resetPassword(with email: String, complited: @escaping (Result<Bool, Error>) -> Void) async {
+        do {
+            try await Auth.auth().sendPasswordReset(withEmail: email)
+            complited(.success(true))
+        } catch {
+            complited(.failure(error))
+        }
+    }
+    
+    
+    func updateUserPassword(with password: String, complited: @escaping (Result<Bool, Error>) -> Void) async {
+        do {
+            try await Auth.auth().currentUser?.updatePassword(to: password)
+            complited(.success(true))
+        } catch {
+            complited(.failure(error))
+        }
+    }
+    
+    
+    func updateUserEamil(with email: String, complited: @escaping (Result<Bool, Error>) -> Void) async {
+        do {
+            try await Auth.auth().currentUser?.sendEmailVerification(beforeUpdatingEmail: email)
+            complited(.success(true))
+        } catch {
+            complited(.failure(error))
+        }
+    }
 }

@@ -32,3 +32,13 @@ struct UserDM: Identifiable, Equatable {
         self.email = user.email ?? ""
     }
 }
+
+extension UserDM {
+    func toDictionary() -> [String: Any] {
+        return [
+            "id": self.id,
+            "name": self.name,
+            "email": self.email
+        ]
+    }
+}
