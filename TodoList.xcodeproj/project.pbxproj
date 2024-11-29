@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA82C5D22CFA2BC100C892B2 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = CA82C5D12CFA2BC100C892B2 /* FirebaseAuth */; };
+		CA82C5D42CFA2BC100C892B2 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = CA82C5D32CFA2BC100C892B2 /* FirebaseDatabase */; };
+		CA82C5D62CFA2BC100C892B2 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CA82C5D52CFA2BC100C892B2 /* FirebaseMessaging */; };
 		CAE23DA42CF9C9FA00D04A06 /* SwiftfulRouting in Frameworks */ = {isa = PBXBuildFile; productRef = CAE23DA32CF9C9FA00D04A06 /* SwiftfulRouting */; };
 /* End PBXBuildFile section */
 
@@ -27,7 +30,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA82C5D62CFA2BC100C892B2 /* FirebaseMessaging in Frameworks */,
+				CA82C5D42CFA2BC100C892B2 /* FirebaseDatabase in Frameworks */,
 				CAE23DA42CF9C9FA00D04A06 /* SwiftfulRouting in Frameworks */,
+				CA82C5D22CFA2BC100C892B2 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +77,9 @@
 			name = TodoList;
 			packageProductDependencies = (
 				CAE23DA32CF9C9FA00D04A06 /* SwiftfulRouting */,
+				CA82C5D12CFA2BC100C892B2 /* FirebaseAuth */,
+				CA82C5D32CFA2BC100C892B2 /* FirebaseDatabase */,
+				CA82C5D52CFA2BC100C892B2 /* FirebaseMessaging */,
 			);
 			productName = TodoList;
 			productReference = CAE23D382CF99D6400D04A06 /* TodoList.app */;
@@ -102,6 +111,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				CAE23DA22CF9C9FA00D04A06 /* XCRemoteSwiftPackageReference "SwiftfulRouting" */,
+				CA82C5D02CFA2BC100C892B2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = CAE23D392CF99D6400D04A06 /* Products */;
@@ -337,6 +347,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CA82C5D02CFA2BC100C892B2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.5.0;
+			};
+		};
 		CAE23DA22CF9C9FA00D04A06 /* XCRemoteSwiftPackageReference "SwiftfulRouting" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SwiftfulThinking/SwiftfulRouting.git";
@@ -348,6 +366,21 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CA82C5D12CFA2BC100C892B2 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA82C5D02CFA2BC100C892B2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		CA82C5D32CFA2BC100C892B2 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA82C5D02CFA2BC100C892B2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		CA82C5D52CFA2BC100C892B2 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA82C5D02CFA2BC100C892B2 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
 		CAE23DA32CF9C9FA00D04A06 /* SwiftfulRouting */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CAE23DA22CF9C9FA00D04A06 /* XCRemoteSwiftPackageReference "SwiftfulRouting" */;

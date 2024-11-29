@@ -10,7 +10,6 @@ import SwiftUI
 struct LoginScreen: View {
     @StateObject private var viewModel = LoginScreenVM()
     @Environment(\.router) private var router
-    @AppStorage(SomeKeys.isAuthorized.rawValue) private var isAuthorized: Bool = false
     var body: some View {
         AuthorizationBaseScreen {
             GeometryReader { proxy in
@@ -35,12 +34,7 @@ struct LoginScreen: View {
                         .fontWeight(.medium)
                         .padding(10)
                         VStack(spacing: 16) {
-                            ButtonView(title: "Login") {
-                                router.showScreen(.fullScreenCover) {_ in
-                                    TodoListScreen()
-                                }
-                                isAuthorized.toggle()
-                            }
+                            ButtonView(title: "Login") { viewModel.login() }
                             HStack(spacing: 8) {
                                 Text("Don’t have an account ?")
                                 Button("Sign Up", action: { router.dismissScreen()  })
@@ -50,6 +44,13 @@ struct LoginScreen: View {
                         }
                     }
                     .padding()
+                }
+            }
+        }
+        .onChange(of: viewModel.user) { _, newValue in
+            if newValue != nil {
+                router.showScreen(.fullScreenCover) {_ in
+                    TodoListScreen()
                 }
             }
         }

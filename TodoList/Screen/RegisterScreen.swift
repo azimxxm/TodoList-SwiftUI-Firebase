@@ -25,14 +25,13 @@ struct RegisterScreen: View {
                     }
                     
                     VStack(spacing: 16) {
-                        CustomTFWithHeaderView(title: "Full name", text: $viewModel.fullName)
                         CustomTFWithHeaderView(title: "Email", text: $viewModel.email)
                         CustomSTFWithHeaderView(title: "Password", text: $viewModel.password)
                         CustomSTFWithHeaderView(title: "Confirm password", text: $viewModel.confirmPassword)
                     }
                     
                     VStack(spacing: 16) {
-                        ButtonView(title: "Register")
+                        ButtonView(title: "Register") { viewModel.register() }
                         HStack(spacing: 8) {
                             Text("Already have an account ?")
                             Button("Sign In", action: {
@@ -48,6 +47,13 @@ struct RegisterScreen: View {
                 .padding()
             }
             .safeAreaPadding(.top, 100)
+            .onChange(of: viewModel.user) { _, newValue in
+                if  newValue != nil {
+                    router.showScreen(.fullScreenCover) { _ in
+                        TodoListScreen()
+                    }
+                }
+            }
         }
     }
 }

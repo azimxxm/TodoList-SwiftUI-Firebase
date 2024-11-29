@@ -45,6 +45,9 @@ struct TodoListScreen: View {
             }
             .listStyle(.inset)
         }
+        .alert(isPresented: $viewModel.showLogOutMenu, content: {
+            Alert(title: Text("Log Out"), message: Text("Are you sure you want to log out?"))
+        })
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Text("November 19.2024")
@@ -57,13 +60,14 @@ struct TodoListScreen: View {
     
     @ViewBuilder
     private var addButton: some View {
-        Button(action: addItem) {
-            Text("+ Add")
-                .font(.subheadline)
-                .padding(10)
-                .background(.main.opacity(0.25))
-                .cornerRadius(12)
-        }
+        Text("+ Add")
+            .font(.subheadline)
+            .padding(10)
+            .background(.main.opacity(0.25))
+            .cornerRadius(12)
+            .onTapGesture { addItem() }
+            .onLongPressGesture { viewModel.showLogOutMenu.toggle() }
+        
     }
 
     private func addItem() {
@@ -93,3 +97,35 @@ struct TodoListScreen: View {
     TodoListScreen()
 //        .modelContainer(for: ItemDM.self, inMemory: true)
 }
+
+
+import SwiftUI
+
+extension View {
+    
+    /// Wrap a View in a Button and add a custom ButtonStyle.
+    func asButton(scale: CGFloat = 0.95, opacity: Double = 1, brightness: Double = 0, action: @escaping () -> Void) -> some View {
+        Button(action: {
+            action()
+        }, label: {
+            self
+        })
+        .buttonStyle(ButtonStyleViewModifier(scale: scale, opacity: opacity, brightness: brightness))
+    }
+    
+    @ViewBuilder
+    func asButton(_ type: ButtonType = .tap, action: @escaping () -> Void) -> some View {
+        switch type {
+        case .press:
+            self.asButton(scale: 0.975, action: action)
+        case .opacity:
+            self.asButton(scale: 1, opacity: 0.85, action: action)
+        case .tap:
+            self.onTapGesture {
+                action()
+            }
+        }
+    }
+    
+}
+

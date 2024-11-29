@@ -15,6 +15,8 @@
 - har bir todo userga bog’lanish kere
 - push notification
 
+- [Firebase](https://github.com/firebase/firebase-ios-sdk)
+
 Token 1 soatdan kegin expire boladi
 
 ## Use technology: SwiftUI, SwiftData, Alamorfire, MVVM

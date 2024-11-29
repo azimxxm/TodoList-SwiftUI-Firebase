@@ -24,7 +24,8 @@ struct TodoListApp: App {
 //        }
 //    }()
     @AppStorage(SomeKeys.isAuthorized.rawValue) private var isAuthorized: Bool = false
-
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
     var body: some Scene {
         WindowGroup {
             RouterView {_ in
