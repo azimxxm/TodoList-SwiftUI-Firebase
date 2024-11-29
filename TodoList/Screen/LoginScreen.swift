@@ -34,22 +34,19 @@ struct LoginScreen: View {
                         .foregroundStyle(.main)
                         .fontWeight(.medium)
                         .padding(10)
-                    }
-                    .padding()
-                }
-                .safeAreaInset(edge: .bottom) {
-                    VStack(spacing: 16) {
-                        ButtonView(title: "Login") {
-                            router.showScreen(.fullScreenCover) {_ in
-                                TodoListScreen()
+                        VStack(spacing: 16) {
+                            ButtonView(title: "Login") {
+                                router.showScreen(.fullScreenCover) {_ in
+                                    TodoListScreen()
+                                }
+                                isAuthorized.toggle()
                             }
-                            isAuthorized.toggle()
-                        }
-                        HStack(spacing: 8) {
-                            Text("Don’t have an account ?")
-                            Button("Sign Up", action: { router.dismissScreen()  })
-                            .foregroundStyle(.main)
-                            .fontWeight(.medium)
+                            HStack(spacing: 8) {
+                                Text("Don’t have an account ?")
+                                Button("Sign Up", action: { router.dismissScreen()  })
+                                .foregroundStyle(.main)
+                                .fontWeight(.medium)
+                            }
                         }
                     }
                     .padding()

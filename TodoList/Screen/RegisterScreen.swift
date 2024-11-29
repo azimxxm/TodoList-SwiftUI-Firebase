@@ -30,26 +30,24 @@ struct RegisterScreen: View {
                         CustomSTFWithHeaderView(title: "Password", text: $viewModel.password)
                         CustomSTFWithHeaderView(title: "Confirm password", text: $viewModel.confirmPassword)
                     }
-                }
-                .padding()
-            }
-            .safeAreaPadding(.top, 100)
-            .safeAreaInset(edge: .bottom) {
-                VStack(spacing: 16) {
-                    ButtonView(title: "Register")
-                    HStack(spacing: 8) {
-                        Text("Already have an account ?")
-                        Button("Sign In", action: {
-                            router.showScreen(.push) {_ in
-                                LoginScreen()
-                            }
-                        })
-                        .foregroundStyle(.main)
-                        .fontWeight(.medium)
+                    
+                    VStack(spacing: 16) {
+                        ButtonView(title: "Register")
+                        HStack(spacing: 8) {
+                            Text("Already have an account ?")
+                            Button("Sign In", action: {
+                                router.showScreen(.push) {_ in
+                                    LoginScreen()
+                                }
+                            })
+                            .foregroundStyle(.main)
+                            .fontWeight(.medium)
+                        }
                     }
                 }
                 .padding()
             }
+            .safeAreaPadding(.top, 100)
         }
     }
 }

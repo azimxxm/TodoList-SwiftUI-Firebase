@@ -15,6 +15,7 @@ struct CustomSTFView: View {
         SecureField("", text: $text, prompt: Text("Placeholder").foregroundStyle(.textGray))
             .padding()
             .keyboardType(keyboardType)
+            .foregroundStyle(.text)
             .background(.white)
             .cornerRadius(16)
     }

@@ -15,6 +15,7 @@ struct CustomTFView: View {
             .padding()
             .keyboardType(keyboardType)
             .background(.white)
+            .foregroundStyle(.text)
             .cornerRadius(16)
     }
 }
