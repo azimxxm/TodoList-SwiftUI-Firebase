@@ -5,6 +5,7 @@
 //  Created by Azimjon Abdurasulov on 30/11/24.
 //
 import Foundation
+import FirebaseCore
 
 class DateFormatterHelp {
     static let shared = DateFormatterHelp()
@@ -48,5 +49,13 @@ class DateFormatterHelp {
         let formatter = DateFormatter()
         formatter.dateFormat = "EE"
         return formatter.string(from: date)
+    }
+    
+    
+    func getCreatedAtFirebaseTimestampToDate(data: [String : Any]) -> Date {
+        guard let createdAt = data["createdAt"] as? Timestamp else { return Date()}
+        let firebaseTimestamp = Timestamp(seconds: createdAt.seconds, nanoseconds: createdAt.nanoseconds)
+        let date = firebaseTimestamp.dateValue()
+        return date
     }
 }

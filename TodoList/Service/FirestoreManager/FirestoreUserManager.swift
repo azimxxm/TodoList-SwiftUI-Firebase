@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
+import Firebase
 
 final class FirestoreUserManager {
     static let shared = FirestoreUserManager()
@@ -61,7 +62,7 @@ final class FirestoreUserManager {
                     title: data["title"] as? String ?? "",
                     details: data["details"] as? String ?? "",
                     isCompleted: data["isCompleted"] as? Bool ?? false,
-                    createdAt: data["createdAt"] as? Date ?? Date()
+                    createdAt: DateFormatterHelp.shared.getCreatedAtFirebaseTimestampToDate(data: data)
                 )
             }
 
@@ -85,6 +86,31 @@ final class FirestoreUserManager {
             .document(todoID)
         
         documentRef.updateData(["isCompleted": isCompleted]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(true))
+            }
+        }
+    }
+
+    
+    
+    func deleteTodoByID(todoID: String, completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let user = Auth.auth().currentUser else {
+            completion(.failure(NSError(domain: "AuthenticationError", code: 401, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])))
+            return
+        }
+        
+        // Reference to the specific document in Firestore
+        let documentRef = Firestore.firestore()
+            .collection("users")
+            .document(user.uid)
+            .collection("todos")
+            .document(todoID)
+        
+        // Delete the document
+        documentRef.delete { error in
             if let error = error {
                 completion(.failure(error))
             } else {

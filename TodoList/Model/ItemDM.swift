@@ -38,7 +38,7 @@ extension ItemDM {
             "title": title,
             "details": details ?? "",
             "isCompleted": isCompleted,
-            "createdAt": createdAt.timeIntervalSince1970
+            "createdAt": createdAt
         ]
     }
 }

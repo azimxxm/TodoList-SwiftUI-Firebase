@@ -21,11 +21,11 @@ struct TodoListScreen: View {
                     .bold()
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                Button("Hide isComplete") {
+                Button(viewModel.showOrHideComplitedButtonText) {
                     withAnimation(.easeInOut(duration: 0.3)) {
                     viewModel.hideIscompleted.toggle()
                 } }
-                .foregroundStyle(.main.opacity(0.5))
+                .foregroundStyle(.main)
                 .buttonStyle(.plain)
             }
             .padding()
@@ -42,6 +42,12 @@ struct TodoListScreen: View {
                     await viewModel.addTodo(item)
                 }
             }
+        })
+        .onChange(of: viewModel.isSelectedDay, { _, _ in
+            viewModel.filtredItemsByDay()
+        })
+        .onChange(of: viewModel.hideIscompleted, { _, _ in
+            viewModel.showOrHideIsComplited()
         })
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
@@ -60,7 +66,7 @@ struct TodoListScreen: View {
     @ViewBuilder
     private var todoList: some View {
         List {
-            ForEach(viewModel.filtredData) { item in
+            ForEach(viewModel.filtredItems) { item in
                 NavigationLink {
                     VStack(spacing: 16) {
                         Text(item.title)
@@ -99,7 +105,7 @@ struct TodoListScreen: View {
         withAnimation {
             for index in offsets {
 //                modelContext.delete(viewModel.items[index])
-                viewModel.items.remove(at: index)
+                Task { await viewModel.deleteTodo(index) }
             }
         }
     }

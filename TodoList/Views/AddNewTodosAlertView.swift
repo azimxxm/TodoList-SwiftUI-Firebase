@@ -27,6 +27,8 @@ struct AddNewTodosAlertView: View {
     
     private func checkAndSend() {
         guard !title.isEmpty, !detail.isEmpty else { return }
+//        let calendar = Calendar(identifier: .gregorian)
+//        let customDate = calendar.date(byAdding: .day, value: -1, to: Date()) ?? Date()
         saveAction?( ItemDM(id: "", title: title, details: detail, createdAt: .now))
         clearFields()
     }
