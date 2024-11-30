@@ -29,7 +29,7 @@ struct TodoListScreen: View {
                 .buttonStyle(.plain)
             }
             .padding()
-            DayFilterView(isSelectedDay: $viewModel.isSelectedDay)
+            DayFilterView(days: viewModel.filterDayData, isSelectedDay: $viewModel.isSelectedDay)
             todoList
 
         }
@@ -37,14 +37,23 @@ struct TodoListScreen: View {
             Alert(title: Text("Log Out"), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: { viewModel.logout() }))
         })
         .alert("Add new item", isPresented: $viewModel.showFormView, actions: {
-            AddNewTodosAlertView { item in addItem(item) }
+            AddNewTodosAlertView { item in
+                Task {
+                    await viewModel.addTodo(item)
+                }
+            }
         })
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Text("November 19.2024")
+                Text(DateFormatterHelp.shared.today())
                     .foregroundStyle(.textGray)
             }
             ToolbarItem(placement: .topBarTrailing) { addButton }
+        }
+        .refreshable {
+            Task {
+                await viewModel.getTodos()
+            }
         }
     }
     
@@ -62,6 +71,9 @@ struct TodoListScreen: View {
                 } label: {
                     TodoListCell(item: item) {
                         item.isCompleted.toggle()
+                        Task {
+                            await viewModel.updateTodo(item)
+                        }
                     }
                 }
             }
@@ -81,12 +93,6 @@ struct TodoListScreen: View {
             .onTapGesture { viewModel.showFormView.toggle() }
             .onLongPressGesture { viewModel.showLogOutMenu.toggle() }
         
-    }
-
-    private func addItem(_ item: ItemDM) {
-        withAnimation {
-            viewModel.items.append(item)
-        }
     }
 
     private func deleteItems(offsets: IndexSet) {

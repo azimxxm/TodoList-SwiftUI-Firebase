@@ -7,18 +7,38 @@
 
 import SwiftUI
 
-class ItemDM: Identifiable, ObservableObject {
-    var id = UUID().uuidString
+class ItemDM: Identifiable, ObservableObject, Decodable {
+    var id: String
     var title: String
     var details: String? = nil
     @Published var isCompleted: Bool
     var createdAt: Date
 
     // Initializer
-    init(title: String, details: String? = nil, isCompleted: Bool = false, createdAt: Date = Date()) {
+    init(id:String, title: String, details: String? = nil, isCompleted: Bool = false, createdAt: Date = Date()) {
+        self.id = id
         self.title = title
         self.details = details
         self.isCompleted = isCompleted
         self.createdAt = createdAt
+    }
+    
+    required init(from decoder: any Decoder) throws {
+        self.id = try decoder.singleValueContainer().decode(String.self)
+        self.title = try decoder.singleValueContainer().decode(String.self)
+        self.details = try? decoder.singleValueContainer().decode(String.self)
+        self.isCompleted = try decoder.singleValueContainer().decode(Bool.self)
+        self.createdAt = try decoder.singleValueContainer().decode(Date.self)
+    }
+}
+
+extension ItemDM {
+    func toDictionary() -> [String: Any] {
+        [
+            "title": title,
+            "details": details ?? "",
+            "isCompleted": isCompleted,
+            "createdAt": createdAt.timeIntervalSince1970
+        ]
     }
 }

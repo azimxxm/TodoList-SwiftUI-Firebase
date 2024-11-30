@@ -35,5 +35,5 @@ struct TodoListCell: View {
 }
 
 #Preview {
-    TodoListCell(item: ItemDM(title: "Salom"))
+    TodoListCell(item: ItemDM(id: "sdsdsd", title: "Salom"))
 }

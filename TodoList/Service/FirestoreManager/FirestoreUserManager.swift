@@ -25,14 +25,74 @@ final class FirestoreUserManager {
         }
     }
     
-    func getUserCollection(compliance: @escaping (Result<UserDM, Error>) -> Void) async throws {
-        guard let user = Auth.auth().currentUser else { return }
-        let snapshoot = try await Firestore.firestore().collection("users").document(user.uid).getDocument()
-        
-        guard let data = snapshoot.data() else {
-            throw URLError(.badServerResponse)
+    
+    func addTodoForCurrentUser(item: ItemDM) async throws {
+        guard let user = Auth.auth().currentUser else {
+            throw NSError(domain: "AuthenticationError", code: 401, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])
         }
-        print(dump(data))
+
+        try await Firestore.firestore()
+            .collection("users")
+            .document(user.uid)
+            .collection("todos")
+            .addDocument(data: item.toDictionary())
     }
+
+    
+    func getTodosForCurrentUser(completion: @escaping (Result<[ItemDM], Error>) -> Void) async {
+        guard let user = Auth.auth().currentUser else {
+            completion(.failure(NSError(domain: "AuthenticationError", code: 401, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])))
+            return
+        }
+
+        do {
+            // Foydalanuvchining todos kolleksiyasini o'qish
+            let snapshot = try await Firestore.firestore()
+                .collection("users")
+                .document(user.uid)
+                .collection("todos")
+                .getDocuments()
+
+            // Hujjatlarni modelga aylantirish
+            let todos = snapshot.documents.map { document -> ItemDM in
+                let data = document.data()
+                return ItemDM(
+                    id: document.documentID,
+                    title: data["title"] as? String ?? "",
+                    details: data["details"] as? String ?? "",
+                    isCompleted: data["isCompleted"] as? Bool ?? false,
+                    createdAt: data["createdAt"] as? Date ?? Date()
+                )
+            }
+
+            completion(.success(todos))
+        } catch {
+            completion(.failure(error))
+        }
+    }
+
+    
+    func updateTodoCompletionStatus(todoID: String, isCompleted: Bool, completion: @escaping (Result<Bool, Error>) -> Void) {
+        guard let user = Auth.auth().currentUser else {
+            completion(.failure(NSError(domain: "AuthenticationError", code: 401, userInfo: [NSLocalizedDescriptionKey: "User not authenticated"])))
+            return
+        }
+        
+        let documentRef = Firestore.firestore()
+            .collection("users")
+            .document(user.uid)
+            .collection("todos")
+            .document(todoID)
+        
+        documentRef.updateData(["isCompleted": isCompleted]) { error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(true))
+            }
+        }
+    }
+
+
     
 }

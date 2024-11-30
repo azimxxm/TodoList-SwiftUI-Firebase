@@ -27,7 +27,7 @@ struct AddNewTodosAlertView: View {
     
     private func checkAndSend() {
         guard !title.isEmpty, !detail.isEmpty else { return }
-        saveAction?( ItemDM(title: title, details: detail, createdAt: .now))
+        saveAction?( ItemDM(id: "", title: title, details: detail, createdAt: .now))
         clearFields()
     }
     

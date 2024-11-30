@@ -8,20 +8,18 @@
 import SwiftUI
 
 struct FilterDayCardCell: View {
-    var month: String
-    var day: String
-    var weekDay: String
+    var date: Date
     var isSelected: Bool = false
     var body: some View {
         VStack(spacing: 6) {
-            Text(month)
+            Text(DateFormatterHelp.shared.getMonthName(date: date))
                 .font(.callout)
                 .foregroundStyle(.textGray)
-            Text(day.description)
+            Text(DateFormatterHelp.shared.getDay(date: date).description)
                 .font(.title2)
                 .bold()
                 .foregroundStyle(.text.opacity(0.70))
-            Text(weekDay)
+            Text(DateFormatterHelp.shared.getWeekDayName(date: date))
                 .font(.callout)
                 .foregroundStyle(.textGray)
         }
@@ -33,9 +31,5 @@ struct FilterDayCardCell: View {
 }
 
 #Preview {
-    FilterDayCardCell(
-        month: "Nov",
-        day: "19",
-        weekDay: "Sun"
-    )
+    FilterDayCardCell(date: Date())
 }
