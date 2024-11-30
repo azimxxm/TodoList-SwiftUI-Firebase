@@ -94,7 +94,7 @@ class TodoListScreenVM: ObservableObject {
     
     
     func deleteTodo(_ index: Int) async {
-        FirestoreUserManager.shared.deleteTodoByID(todoID: items[index].id) {[weak self] result in
+        FirestoreUserManager.shared.deleteTodoByID(todoID: filtredItems[index].id) {[weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let success):
@@ -113,9 +113,9 @@ class TodoListScreenVM: ObservableObject {
     }
     
     private func removeTodoInLocalBy(_ index: Int) {
-        let item = self.items[index]
-        self.filtredItems.remove(at: index)
-        guard let index = self.items.firstIndex(where: {$0.id == item.id}) else { return }
+        let itemID = self.filtredItems[index].id
+        guard let index = self.items.firstIndex(where: {$0.id == itemID}) else { return }
+        filtredItems.remove(at: index)
         items.remove(at: index)
     }
     
