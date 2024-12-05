@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
-class ItemDM: Identifiable, ObservableObject, Decodable {
+
+@Model
+class ItemDM: Identifiable, Decodable {
     var id: String
     var title: String
     var details: String? = nil
-    @Published var isCompleted: Bool
+    var isCompleted: Bool
     var createdAt: Date
 
     // Initializer

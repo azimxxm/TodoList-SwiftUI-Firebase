@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TodoListCell: View {
-    @ObservedObject var item: ItemDM
+    var item: ItemDM
     var selected: (()-> Void)?
     var body: some View {
         HStack {

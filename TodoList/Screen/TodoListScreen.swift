@@ -10,6 +10,7 @@ import SwiftData
 
 struct TodoListScreen: View {
     @Environment(\.modelContext) private var modelContext
+    @Query private  var itemsLocal: [ItemDM]
     @StateObject private var viewModel = TodoListScreenVM()
     
     var body: some View {
@@ -32,6 +33,10 @@ struct TodoListScreen: View {
             DayFilterView(days: viewModel.filterDayData, isSelectedDay: $viewModel.isSelectedDay)
             todoList
 
+        }
+        .onFirstAppear {
+            viewModel.modelContext = modelContext
+            viewModel.items = itemsLocal
         }
         .alert(isPresented: $viewModel.showLogOutMenu, content: {
             Alert(title: Text("Log Out"), primaryButton: .cancel(), secondaryButton: .destructive(Text("Yes"), action: { viewModel.logout() }))

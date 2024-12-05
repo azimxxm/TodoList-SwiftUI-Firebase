@@ -10,7 +10,7 @@ import SwiftUI
 
 @MainActor
 class TodoListScreenVM: ObservableObject {
-    //    @Query  var items: [ItemDM]
+    @Published var modelContext: ModelContext?
     @Published var items: [ItemDM] = []
     @Published var filtredItems: [ItemDM] = []
     @Published var filterDayData: [Date] = []
@@ -36,15 +36,47 @@ class TodoListScreenVM: ObservableObject {
              DispatchQueue.main.async {
                  switch result {
                  case .success(let success):
-                     self?.items = success
-                     self?.filtredItems = self?.filterItemsByDay() ?? []
-                     self?.dayForFilter(items: success)
+//                     self?.items = success
+//                     self?.filtredItems = self?.filterItemsByDay() ?? []
+//                     self?.dayForFilter(items: success)
+                     self?.saveItemsToLocal(success)
                  case .failure(let failure):
                      self?.errorMessage = failure.localizedDescription
                  }
              }
         })
     }
+    
+    /// Save fetched items to local ModelContext
+    private func saveItemsToLocal(_ fetchedItems: [ItemDM]) {
+        guard let modelContext else { return }
+        // Fetch existing items from the local ModelContext
+        let fetchDescriptor = FetchDescriptor<ItemDM>()
+        let existingItems: [ItemDM]
+        
+        do {
+            existingItems = try modelContext.fetch(fetchDescriptor)
+        } catch {
+            print("Failed to fetch existing items: \(error)")
+            return
+        }
+        
+        let existingIDs = Set(existingItems.map { $0.id }) // Extract IDs of existing items
+        let newItems = fetchedItems.filter { !existingIDs.contains($0.id) } // Filter new items
+
+        // Insert new items into the context
+        newItems.forEach { modelContext.insert($0) }
+
+        // Save the context
+        do {
+            try modelContext.save()
+            self.filtredItems = self.filterItemsByDay()
+            self.dayForFilter(items: fetchedItems)
+        } catch {
+            print("Failed to save items to local database: \(error)")
+        }
+    }
+
     
     
     func logout() {
@@ -113,10 +145,11 @@ class TodoListScreenVM: ObservableObject {
     }
     
     private func removeTodoInLocalBy(_ index: Int) {
-        let itemID = self.filtredItems[index].id
-        guard let index = self.items.firstIndex(where: {$0.id == itemID}) else { return }
+        guard let modelContext else { return }
+        let item = self.filtredItems[index]
+        guard let index = self.items.firstIndex(where: {$0.id == item.id}) else { return }
         filtredItems.remove(at: index)
-        items.remove(at: index)
+        modelContext.delete(item)
     }
     
     func filtredItemsByDay() {

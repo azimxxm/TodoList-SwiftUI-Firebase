@@ -11,18 +11,18 @@ import SwiftfulRouting
 
 @main
 struct TodoListApp: App {
-//    var sharedModelContainer: ModelContainer = {
-//        let schema = Schema([
-//            ItemDM.self,
-//        ])
-//        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-//
-//        do {
-//            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-//        } catch {
-//            fatalError("Could not create ModelContainer: \(error)")
-//        }
-//    }()
+    var sharedModelContainer: ModelContainer = {
+        let schema = Schema([
+            ItemDM.self
+        ])
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+
+        do {
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }()
     @AppStorage(SomeKeys.isAuthorized.rawValue) private var isAuthorized: Bool = false
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
@@ -31,11 +31,11 @@ struct TodoListApp: App {
             RouterView {_ in
                 if isAuthorized {
                     TodoListScreen()
+                        .modelContainer(sharedModelContainer)
                         .preferredColorScheme(.light)
                 } else {
                     GetStartedScreen()
                         .preferredColorScheme(.light)
-                    //                .modelContainer(sharedModelContainer)
                 }
             }
         }
